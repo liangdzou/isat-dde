@@ -3,5 +3,5 @@
 3. library paths: src/isat3, /home/liang/programs/MATLAB/R2014a/bin/glnxa64
 4. libraries: isat3, eng, mx, mex
 5. GCC c++ Linker: -rpath /home/liang/programs/MATLAB/R2014a/bin/glnxa64
-
+6. install b4m and Profil. (Just copy the files in My Computer, and add b4m to Matlab folder.)
 

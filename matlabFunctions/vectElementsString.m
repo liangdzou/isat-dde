@@ -1,8 +1,8 @@
 function elementsStr = vectElementsString(vect)
 
 vectStr = vectorize(vect);
-i = strfind(vectStr, ', [');
+i = strfind(vectStr, '[[');
 j = strfind(vectStr, '])');
-elementsStr = vectStr(i+3 : j-1);
+elementsStr = vectStr(i+1 : j-1);
 
 end

@@ -1,5 +1,6 @@
 function [V,dm,exitflag] = poly_Lyapunov(coefBefore, coefAfter, xi, varNums, deg, coefBL, coefBU, delta, upsilon)
 
+% calculate coefBFMat
 coefBLVect = ones(1, varNums*(deg+1)) * coefBL;
 coefBUVect = ones(1, varNums*(deg+1)) * coefBU;
 xiBLVect = zeros(1,varNums);
@@ -9,12 +10,13 @@ BUVect = [coefBUVect, xiBUVect];
 varInter = interval(BLVect, BUVect);
 coefBFMat = transpose(varInter) * varInter;
 
+% calculate coefAFMat
 xi1 = sym('xia', varNums);
 coefParameters = [transpose(coefBefore); xi; xi1];
 coefParameters= coefParameters(:);
 coefAFVector = [transpose(coefAfter); xi1];
 coefAFVector = coefAFVector(:);
-coefAF = eval(['@(', vectElementsString(coefParameters), ') [', vectElementsString(coefAFVector), ']']);
+coefAF = eval(['@(', strrep(strrep(vectElementsString(coefParameters),'[',''),']',''), ') [', vectElementsString(coefAFVector), ']']);
 
 varAFParameters = [varInter, interval(xiBLVect, xiBUVect)];
 coefAFStr = 'coefAF(varAFParameters(1)';
@@ -25,6 +27,7 @@ coefAFStr = strcat(coefAFStr, ')');
 coefAFInter = eval(coefAFStr);
 coefAFMat = transpose(coefAFInter)*coefAFInter;
 
+% calculate coefMat, and call poly_lp
 coefMat = coefBFMat - coefAFMat;
 
 set(0,'RecursionLimit',10000);

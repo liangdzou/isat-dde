@@ -1,3 +1,4 @@
+% solve the LII
 function [dm,exitflag] = poly_lp(coefMat, upsilon, B)
 
 coefMatBL = coefMat.inf;

@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <string>
 #include <stdbool.h>
 
 #include "isat3/isat3.h"
 #include "parameters.h"
 #include "isat3_solver.h"
+
+using std::string;
 
 struct isat3_node **iSAT3_decl(struct isat3 *is3, char **varNames, double *bl,
 		double *bu, int varNums) {

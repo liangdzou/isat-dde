@@ -12,8 +12,6 @@
 //void printToiSAT(char **);
 void iSAT3StrTest(Engine *ep);
 
-extern int getInt(Engine *ep, char* varName);
-extern char *getString(Engine *ep, char* varName);
 char *getStrFromStrArray(char **strArray);
 void freeTable(char **strArray);
 

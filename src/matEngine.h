@@ -5,19 +5,16 @@
  *      Author: liang
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include "engine.h"
+#include<string>
 
-#define  BUFSIZE 256
+using std::string;
 
 #ifndef MATENGINE_H_
 #define MATENGINE_H_
 
-int getInt(Engine *ep, char* varName);
-double getDouble(Engine *ep, char* varName);
-char *getString(Engine *ep, char* varName);
-char *toZeroDot(char *str, int nums);
+extern int getInt(Engine *ep, string var);
+extern double getDouble(Engine *ep, string var);
+extern string getString(Engine *ep, string var);
+string toZeroDot(string str);
 
 #endif /* MATENGINE_H_ */

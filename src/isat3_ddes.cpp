@@ -52,21 +52,24 @@ int main(int argc, char **argv) {
 	initStr = getInit(ep);
 	transStr = getTrans(ep);
 	dangerTarget = getDangerTarget(ep);
-	string V = getString(ep, "charV");
-	string target = V + "<" + std::to_string(c_max) + "or" + dangerTarget;
-//	sprintf(target, "%s<%f or (%s);", V, c_max, dangerTarget);
+	char* V = getString(ep, "charV");
+	char* target = static_cast<char*>(malloc(1000 * sizeof(char)));
+	sprintf(target, "%s<%f or (%s);", V, c_max, dangerTarget);
+//	string target = V + "<" + std::to_string(c_max) + "or" + dangerTarget;
 
 //	printf("%s\n\n%s\n\n%s", initStr, transStr, dangerTarget);
 
 	bool result = iSAT3_bmc(varNames, bl, bu, varNums, initStr, transStr,
-			target.c_str());
+			target);
 	if (!result)
 		printf("The time span is not enough to give a precise result!");
 	else {
-		string target = V + "<" + std::to_string(c_max) + "and !" + dangerTarget;
+		sprintf(target, "%s<%f and !(%s);", V, c_max, dangerTarget);
+//		string target = V + "<" + std::to_string(c_max) + "and !"
+				+ dangerTarget;
 		result = iSAT3_bmc(varNames, bl, bu, varNums, initStr, transStr,
 				target);
-		printf(result? "It is safe.":"It is not safe.");
+		printf(result ? "It is safe." : "It is not safe.");
 	}
 
 //	bool result = iSAT3_bmc(varNames, bl, bu, varNums, initStr, transStr,

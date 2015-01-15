@@ -5,7 +5,7 @@ using std::cout;
 
 #include "matEngine.h"
 
-int getInt(Engine *ep, string var) {
+int getMInt(Engine *ep, string var) {
 	mxArray *mval = engGetVariable(ep, var.c_str());
 	if (mval == NULL) {
 		cout << var << "is NULL. (in matEngine.cpp)";
@@ -37,7 +37,7 @@ string getString(Engine *ep, string var) {
 		return NULL;
 	}
 	int varLength = mxGetM(mval) * mxGetN(mval);
-	char *str = malloc(sizeof(char) * (varLength + 1));
+	char *str = static_cast<char *>(malloc(sizeof(char) * (varLength + 1)));
 	mxGetString(mval, str, varLength + 1);
 	string val = toZeroDot(str);
 	mxDestroyArray(mval);

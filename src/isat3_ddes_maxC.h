@@ -10,12 +10,6 @@
 
 #define  BUFSIZE 256
 
-double linear_maxC(Engine *ep);
-double poly_maxC(Engine *ep);
-
-extern double getDouble(Engine *ep, char* varName);
-extern char *getString(Engine *ep, char* varName);
-
-extern void expr_test();
+extern double get_maxC(Engine *ep);
 
 #endif /* ISAT3_DDES_LINEAR_H_ */

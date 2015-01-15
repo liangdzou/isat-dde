@@ -8,17 +8,15 @@
 #ifndef ISAT3_DDES_GETRELATION_H_
 #define ISAT3_DDES_GETRELATION_H_
 
-//char **getRelation(Engine *ep);
-//void printToiSAT(char **);
-void iSAT3StrTest(Engine *ep);
+#include <string>
+using std::string;
 
-char *getStrFromStrArray(char **strArray);
-void freeTable(char **strArray);
+extern int size;
 
-int setDecl(Engine *ep, char ***varNamesPointer, double **blPointer,
-		double **buPointer);
-char *getInit(Engine *ep);
-char *getTrans(Engine *ep);
-char *getDangerTarget(Engine *ep);
+extern int setDecl(Engine* ep, string vars[], double bl[], double bu[]);
+extern string getInit(Engine *ep);
+extern string getTrans(Engine *ep);
+extern string getDangerTarget(Engine *ep);
+extern void iSAT3StrTest(Engine *ep);
 
 #endif /* ISAT3_DDES_GETRELATION_H_ */

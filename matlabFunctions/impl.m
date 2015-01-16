@@ -22,7 +22,7 @@ for i = 1 : varNums
 end
 
 % stability check, output dm '-1' if it is not stable
-if isLinear
+if linear
     coefMatrix = linear_getCoefMatrix(coefBefore,coefAfter);
     [coefMatrices,matricesXi] = linear_getCoefMatrices(coefMatrix,xi,delta);
     [tmin,xfeas,lmis,S] = linear_Stability(coefMatrices); % using LMIs

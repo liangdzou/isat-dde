@@ -8,13 +8,13 @@
 % inputs 1
 % init = [8., 8.];
 % ddes = @(x) [-x(1); -x(2)];
-% isLinear = true;
+% linear = true;
 % delta = 1;
 
 % inputs 2
 init = 1;
 ddes = @(x) -x;
-isLinear = true;
+linear = true;
 delta = 1;
 
 % maximum degree (deg)

@@ -14,7 +14,7 @@ using std::string;
 
 #include "engine.h"
 
-extern int getMInt(Engine *ep, string var);
+extern int getInt(Engine *ep, string var);
 extern double getDouble(Engine *ep, string var);
 extern string getString(Engine *ep, string var);
 string toZeroDot(string str);

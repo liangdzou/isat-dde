@@ -51,7 +51,7 @@ typedef long				i3_long_t;
 typedef unsigned long			i3_ulong_t;
 typedef i3_ulong_t			i3_addr_t;
 typedef double				i3_double_t;
-typedef size_t				i3_csize_t;
+//typedef size_t				i3_csize_t;
 
 #ifdef __cplusplus
 #define i3_none_t

@@ -10,12 +10,11 @@
 
 static const double BL = -10;
 static const double BU = 10;
-static const long exprTimeSpan = 6000000;
-static const long bmcTimeSpan = 6000000000;
+static const long expr_t_max = 6000000;
+static const long bmc_t_max = 6000000000;
 
-static const double cMin = -1000;
-static const double cMax = 1000;
-static const double cDelta = 0.1;
-
+static const double c_min = -1000;
+static const double c_max = 1000;
+static const double c_delta = 0.1;
 
 #endif /* PARAMETERS_H_ */

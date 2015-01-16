@@ -5,7 +5,7 @@ using std::cout;
 
 #include "matEngine.h"
 
-int getMInt(Engine *ep, string var) {
+int getInt(Engine *ep, string var) {
 	mxArray *mval = engGetVariable(ep, var.c_str());
 	if (mval == NULL) {
 		cout << var << "is NULL. (in matEngine.cpp)";
@@ -48,7 +48,7 @@ string getString(Engine *ep, string var) {
 string toZeroDot(string str) {
 	string newStr = "";
 	bool needCheck = true;
-	for (int i = 0; i < str.size(); i++) {
+	for (size_t i = 0; i < str.size(); i++) {
 		if (needCheck && str[i] == '.') {
 			newStr += "0.";
 		} else {

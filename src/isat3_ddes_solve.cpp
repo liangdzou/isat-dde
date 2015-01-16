@@ -2,11 +2,9 @@
 #include <string>
 #include "engine.h"
 
-#include "isat3_ddes.h"
-#include "isat3_ddes_maxC.h"
 #include "isat3/isat3.h"
-#include "isat3_ddes_iSAT3.h"
-#include "isat3_solver.h"
+#include "isat3_ddes_problem.h"
+#include "isat3_face.h"
 #include "matEngine.h"
 
 using std::string;
@@ -14,19 +12,6 @@ using std::to_string;
 using std::cout;
 using std::endl;
 
-bool isLinear(Engine *ep) {
-	mxArray *result = engGetVariable(ep, "isLinear");
-	if (result == NULL) {
-		printf("Variable isLinear is not specified.\n"
-				"  (It is polynomial by default.)");
-		mxDestroyArray(result);
-		return false;
-	} else {
-		bool *ret = (bool*) mxGetPr(result);
-		mxDestroyArray(result);
-		return *ret;
-	}
-}
 
 int main(int argc, char **argv) {
 	Engine *ep;
@@ -40,6 +25,7 @@ int main(int argc, char **argv) {
 	engEvalString(ep, "addpath('./matlabFunctions');");
 	engEvalString(ep, "impl();");
 
+	/*
 	// get maximum c
 	double c_max = 1;
 	get_maxC(ep);
@@ -69,6 +55,7 @@ int main(int argc, char **argv) {
 		result = iSAT3_bmc(vars, bl, bu, initStr, transStr, target);
 		cout << (result ? "It is safe." : "It is not safe.");
 	}
+	*/
 
 	engClose(ep);
 	isat3_cleanup();

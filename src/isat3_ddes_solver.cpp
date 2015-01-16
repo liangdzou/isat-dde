@@ -10,9 +10,10 @@
 using std::to_string;
 using std::cout;
 using std::endl;
+using std::begin;
+using std::end;
 
 #include "isat3_ddes_solver.h"
-#include "isat3/isat3.h"
 #include "isat3_face.h"
 #include "matEngine.h"
 #include "parameters.h"
@@ -31,9 +32,8 @@ double isat3_c_max_computer::c_max_computation(isat3_ddes_problem problem,
 	for (int i = 0; c_U - c_L >= c_delta; i++) {
 		c = (c_L + c_U) / 2;
 		exprStr = ly + "<=" + to_string(c) + "and (" + target + ")";
-		isat3_node* expr = isat3_node_create_from_string(problem.is3,
-				exprStr.c_str());
-		bool sat = isat3_solve_expr(problem.is3, expr, expr_t_max);
+		bool sat = iSAT3_expr(problem.is3, problem.get_vars_begin(),
+				problem.get_vars_end(), exprStr, true);
 		if (!sat) {
 			isfound = true;
 			c_L = c;

@@ -21,14 +21,12 @@ using std::endl;
 #include "isat3_face.h"
 #include "parameters.h"
 
-#include "matEngine.h"
-
-isat3_ddes_problem::isat3_ddes_problem() {
+isat3_ddes_problem::isat3_ddes_problem(string script) {
 
 	if (!(ep = engOpen("\0")))
 		cout << "Can't start MATLAB engine" << endl;
 	engEvalString(ep, "addpath('./matlabFunctions');");
-	engEvalString(ep, "impl();");
+	engEvalString(ep, script.c_str());
 
 	row = getInt(ep, "varNums");
 	column = getInt(ep, "deg") + 1;
@@ -110,15 +108,15 @@ void isat3_ddes_problem::trans_def() {
 			engEvalString(ep, getAF.c_str());
 			string coefbf = getString(ep, "coefbf");
 			string coefaf = getString(ep, "coefaf");
-			trans += coefbf + "' = " + coefaf + ";\n";
+			trans += coefbf + "' = " + coefaf + ";";
 		}
 	}
 
 }
 
 void isat3_ddes_problem::print() {
-	cout << this->init << endl;
-	cout << this->trans << endl;
+	cout << this->init << "\n\n";
+	cout << this->trans << "\n\n";
 	cout << this->target << endl;
 }
 

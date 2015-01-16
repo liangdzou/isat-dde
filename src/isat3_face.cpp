@@ -6,6 +6,11 @@
 #include "parameters.h"
 
 using std::string;
+using std::cout;
+using std::endl;
+
+void isat3_result_print(isat3* is3, i3_type_t result, isat3_node** vars_begin,
+		isat3_node** vars_end);
 
 bool iSAT3_expr(isat3* is3, isat3_node** vars_begin, isat3_node** vars_end,
 		string exprStr, bool print) {
@@ -17,7 +22,6 @@ bool iSAT3_expr(isat3* is3, isat3_node** vars_begin, isat3_node** vars_end,
 	return isat3_result_contains_solution(result);
 }
 
-// TODO: test bmc algorithm
 bool iSAT3_bmc(isat3* is3, isat3_node** vars_begin, isat3_node** vars_end,
 		string initStr, string transStr, string targetStr, bool print) {
 	isat3_node *init = isat3_node_create_from_string(is3, initStr.c_str());
@@ -36,32 +40,36 @@ bool iSAT3_bmc(isat3* is3, isat3_node** vars_begin, isat3_node** vars_end,
 void isat3_result_print(isat3* is3, i3_type_t result, isat3_node** vars_begin,
 		isat3_node** vars_end) {
 	i3_tframe_t tframe = isat3_get_tframe(is3);
-	printf("%s (in tframe %d)\n", isat3_get_result_string(result), tframe);
 	if (isat3_result_contains_solution(result)) {
+		cout << isat3_get_result_string(result) << " (in tframe " << tframe
+				<< ")" << endl;
 		for (i3_tframe_t t = 0; t <= tframe; t++) {
+			cout << "tframe" << t;
 			for (auto vars_p = vars_begin; vars_p != vars_end; ++vars_p) {
 				if (*vars_p != NULL) {
-					std::cout << "tframe" << t
-							<< isat3_node_get_variable_name(is3, *vars_p)
+					cout << "\t" << isat3_node_get_variable_name(is3, *vars_p)
 							<< (isat3_is_lower_bound_strict(is3, *vars_p, t) ?
 									"(" : "[")
-							<< isat3_get_lower_bound(is3, *vars_p, t)
+							<< isat3_get_lower_bound(is3, *vars_p, t) << ", "
 							<< isat3_get_upper_bound(is3, *vars_p, t)
 							<< (isat3_is_upper_bound_strict(is3, *vars_p, t) ?
-									")" : "]") << std::endl;
+									")" : "]") << endl;
 				}
 			}
 		}
+	} else {
+		cout << "NO SOLUTION" << endl;
 	}
 }
 
 // Unit TEST
-using std::cout;
-using std::endl;
-
 void expr_test(isat3* is3, isat3_node** vars_begin, isat3_node** vars_end);
+void bmc_test(isat3* is3, isat3_node** vars_begin, isat3_node** vars_end);
 
-void unit_test() {
+using std::begin;
+using std::end;
+
+void isat3_face_test() {
 	isat3_setup();
 	isat3* is3 = isat3_init(NULL);
 
@@ -75,6 +83,7 @@ void unit_test() {
 
 	// start test
 	expr_test(is3, std::begin(vars), std::end(vars));
+	bmc_test(is3, std::begin(vars), std::end(vars));
 
 	for (size_t i = 0; i < size; i++) {
 		isat3_node_destroy(is3, vars[i]);
@@ -85,8 +94,13 @@ void unit_test() {
 }
 
 void expr_test(isat3* is3, isat3_node** vars_begin, isat3_node** vars_end) {
-	string exprStr = "(x1^2 = x2^3 + x3^4 + x4^5);\n" "(x1 != 0) and "
-			"(x2 != 0) and (x3 != 0) and (x4 != 0);";
-	cout << (iSAT3_expr(is3, vars_begin, vars_end, exprStr, true) ? "true" : "false") << endl;
+	iSAT3_expr(is3, vars_begin, vars_end,
+			"(x1^2 < x2^3 + x3^4 + x4^5) and (x1 = 1) and (x2 = -1) and (x3 = 1) and (x4 != 0);",
+			true);
+}
+
+void bmc_test(isat3* is3, isat3_node** vars_begin, isat3_node** vars_end) {
+	iSAT3_bmc(is3, vars_begin, vars_end, "x1=0; x2=0; x3=0; x4=0;", "x1' = x1+1;",
+			"x1>9;", true);
 }
 

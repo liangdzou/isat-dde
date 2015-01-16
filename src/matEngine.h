@@ -17,6 +17,7 @@ using std::string;
 extern int getInt(Engine *ep, string var);
 extern double getDouble(Engine *ep, string var);
 extern string getString(Engine *ep, string var);
-string toZeroDot(string str);
+
+extern void mat_engine_test();
 
 #endif /* MATENGINE_H_ */

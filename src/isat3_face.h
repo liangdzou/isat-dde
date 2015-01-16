@@ -17,7 +17,7 @@ extern bool iSAT3_expr(isat3* is3, isat3_node** vars_begin, isat3_node** vars_en
 		string exprStr, bool print);
 extern bool iSAT3_bmc(isat3* is3, isat3_node** vars_begin, isat3_node** vars_end,
 		string initStr, string transStr, string targetStr, bool print);
-extern void expr_test();
+extern void isat3_face_test();
 
 
 #endif /* ISAT3_SOLVER_H_ */

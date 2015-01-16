@@ -8,8 +8,8 @@
 #ifndef PARAMETERS_H_
 #define PARAMETERS_H_
 
-static const double BL = -10;
-static const double BU = 10;
+static const double BL = -1000;
+static const double BU = 1000;
 static const long expr_t_max = 6000000;
 static const long bmc_t_max = 6000000000;
 

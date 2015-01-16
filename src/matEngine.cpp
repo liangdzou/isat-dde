@@ -1,7 +1,9 @@
-#include<iostream>
-#include<cmath>
+#include <iostream>
+#include <cmath>
+#include <sstream>
 
 using std::cout;
+using std::endl;
 
 #include "matEngine.h"
 
@@ -10,7 +12,7 @@ int getInt(Engine *ep, string var) {
 	if (mval == NULL) {
 		cout << var << "is NULL. (in matEngine.cpp)";
 		mxDestroyArray(mval);
-		return NAN;
+		return 0;
 	}
 	int val = (int) *mxGetPr(mval);
 	mxDestroyArray(mval);
@@ -29,6 +31,8 @@ double getDouble(Engine *ep, string var) {
 	return val;
 }
 
+string toZeroDot(string str);
+
 string getString(Engine *ep, string var) {
 	mxArray *mval = engGetVariable(ep, var.c_str());
 	if (mval == NULL) {
@@ -36,30 +40,43 @@ string getString(Engine *ep, string var) {
 		mxDestroyArray(mval);
 		return NULL;
 	}
-	int varLength = mxGetM(mval) * mxGetN(mval);
-	char *str = static_cast<char *>(malloc(sizeof(char) * (varLength + 1)));
-	mxGetString(mval, str, varLength + 1);
+	size_t size = mxGetM(mval) * mxGetN(mval) + 1;
+	char *str = new char[size];
+	mxGetString(mval, str, size);
 	string val = toZeroDot(str);
 	mxDestroyArray(mval);
-	free(str);
+	delete[] (str);
 	return val;
 }
 
 string toZeroDot(string str) {
-	string newStr = "";
-	bool needCheck = true;
+	std::ostringstream ret;
+	bool flag = true;
 	for (size_t i = 0; i < str.size(); i++) {
-		if (needCheck && str[i] == '.') {
-			newStr += "0.";
+		if (flag && str[i] == '.') {
+			ret << "0.";
 		} else {
-			newStr += newStr + str[i];
+			ret << str[i];
 		}
 		if ('0' <= str[i + 1] && str[i + 1] <= '9') {
-			needCheck = false;
+			flag = false;
 		} else {
-			needCheck = true;
+			flag = true;
 		}
 	}
-	return newStr;
+	return ret.str();
+}
+
+// UNIT test
+void mat_engine_test() {
+	Engine* ep;
+	if (!(ep = engOpen("\0")))
+		cout << "Can't start MATLAB engine" << endl;
+	engEvalString(ep, "addpath('./matlabFunctions');");
+	engEvalString(ep, "mat_test");
+	cout << getInt(ep, "ival") << endl;
+	cout << getDouble(ep, "dval") << endl;
+	cout << getString(ep, "sval") << endl;
+	engClose(ep);
 }
 

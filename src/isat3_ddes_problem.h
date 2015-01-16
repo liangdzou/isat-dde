@@ -16,9 +16,9 @@
 
 class isat3_ddes_problem {
 
-//	double vars_bl[], vars_bu[];
 	unsigned row, column;
-	isat3_node* vars[];
+	isat3_node** vars_begin;
+	isat3_node** vars_end;
 	std::string init, trans, target;
 
 	void vars_def();
@@ -26,18 +26,27 @@ class isat3_ddes_problem {
 	void trans_def();
 
 public:
-	isat3* is3 = isat3_init(NULL);
-	Engine *ep;
+	isat3* is3;
+	Engine* ep;
 
-	isat3_ddes_problem();
+	isat3_ddes_problem(string script);
 	~isat3_ddes_problem() {
-		for (size_t i = 0; i < row * (column + 1) + 1; i++) {
-			isat3_node_destroy(is3, vars[i]);
+		for (auto var = vars_begin; var != vars_end; ++var) {
+			isat3_node_destroy(is3, *var);
 		}
 		isat3_deinit(is3);
 		isat3_cleanup();
 		engClose(ep);
 	}
+
+	isat3_node** get_vars_begin() {
+		return vars_begin;
+	}
+
+	isat3_node** get_vars_end() {
+		return vars_end;
+	}
+
 	void print();
 };
 

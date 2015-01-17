@@ -1,4 +1,4 @@
-function [ly,md,flag] = ly_poly(a0, a1, xi, Wa, Wco, delta, e, md)
+function [ly,flag] = ly_poly(a0, a1, xi, Wa, Wco, DELTA, e, md)
 
 % calculate Ivar0
 col = 2^(size(a0,1)*size(a0,2));
@@ -12,7 +12,7 @@ for i = 1 : col
         end
     end
 end
-Ivar0 = [Ia0; interval(zeros(size(a0,1),col), ones(size(a0,1),col)) * delta];
+Ivar0 = [Ia0; interval(zeros(size(a0,1),col), ones(size(a0,1),col)) * DELTA];
 % calculate Ivar1
 Ivar1 = Ivar0;
 var0 = [a0(:);xi];
@@ -31,7 +31,7 @@ for i = 1 : col
 end
 IVvar = transpose(IVvar1 - IVvar0);
 % calculate IVvarp
-Mep = [ones(size(a0,1)*size(a0,2),1)* e; ones(size(a0,1),1) * delta] * transpose([ones(size(a0,1)*size(a0,2),1)* e; ones(size(a0,1),1) * delta]);
+Mep = [ones(size(a0,1)*size(a0,2),1)* e; ones(size(a0,1),1) * DELTA] * transpose([ones(size(a0,1)*size(a0,2),1)* e; ones(size(a0,1),1) * DELTA]);
 Mep = Mep(:);
 Vep = IVvar0;
 for i = 1 : col

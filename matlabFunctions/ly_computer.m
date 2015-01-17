@@ -1,14 +1,14 @@
 % solve the LII
-function [ly_str,dm] = ly_computer(coefMat, upsilon, B)
+function [ly_str,dm] = ly_computer(a0, a1, xi, DELTA)
 
 if linear
-    coefMatrix = ly_linear_getCoefMatrix(coefBefore,coefAfter);
-    [coefMatrices,matricesXi] = linear_getCoefMatrices(coefMatrix,xi,delta);
-    [tmin,xfeas,lmis,S] = ly_linear_Stability(coefMatrices); % using LMIs
-    [ly,dm] = linear_Lyapunov(tmin,xfeas,lmis,S,coefBefore,coefMatrix,matricesXi,xi); % using fmincon
+    A = ly_linear_A(a0,a1);
+    [As,Xs] = ly_linear_As(A,xi,DELTA);
+    [tmin,xfeas,lmis,S] = ly_linear_Stability(As); % using LMIs
+    [ly,dm] = ly_linear(tmin,xfeas,lmis,S,a0,A,Xs,xi); % using fmincon
     ly_str = char(ly);
 else
-    [ly,dm,flag] = ly_poly(a0, a1, xi, Wa, Wco, delta, e, dm);
+    [ly,flag] = ly_poly(a0, a1, xi, Wa, Wco, delta, e, dm);
     if flag
         ly_str = char(ly);
     else

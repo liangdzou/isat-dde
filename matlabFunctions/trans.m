@@ -1,4 +1,4 @@
-function a1 = trans(DDES, INIT, DELTA, DEG)
+function [a0,a1,xi,expr0] = trans(DDES, INIT, DELTA, DEG)
 
 % get templates for this segment (coefBefore) and the next segment (coefAfter)
 syms t;

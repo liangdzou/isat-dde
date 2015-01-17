@@ -14,4 +14,3 @@ AU = 1000;
 % target (variables are x1, ..., xn)
 TARGET = [sym('x1>1'); sym('x1<-1')];
 
-% start compute

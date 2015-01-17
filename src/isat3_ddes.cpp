@@ -21,8 +21,12 @@ int main(int argc, char **argv) {
 	isat3_face_test();
 #endif
 
-	isat3_ddes_problem problem("impl");
+	isat3_ddes_problem problem("ex1");
+#ifndef NDebug
 	problem.print();
+#endif
+
+
 
 	/*
 	 Engine *ep;

@@ -1,23 +1,23 @@
-function [tmin,xfeas,lmis,S] = ly_linear_Stability(coefMatrices)
+function [tmin,xfeas,lmis,S] = ly_linear_Stability(As)
 
-matrixNums = size(coefMatrices,3);
+As_num = size(As,3);
 % specifying LMIs
 setlmis([]);
-% S = sym('S',[1, matrixNums]);
-% G = sym('G',[1, matrixNums]);
-sgSize = size(coefMatrices(:,:,1),1);
-for i = 1 : matrixNums
+% S = sym('S',[1, As_num]);
+% G = sym('G',[1, As_num]);
+sgSize = size(As(:,:,1),1);
+for i = 1 : As_num
     S(i)=lmivar(1,[sgSize 1]);
     G(i)=lmivar(2,[sgSize sgSize]);
 end
-% Prop = sym('Prop',[1, matrixNums]);
-for i = 1 : matrixNums
-    for j = 1 : matrixNums
-        Prop((i-1)*matrixNums+j) = newlmi;
-        lmiterm([-Prop((i-1)*matrixNums+j) 1 1 G(i)],1,1,'s');
-        lmiterm([-Prop((i-1)*matrixNums+j) 1 1 S(i)],-1,1);
-        lmiterm([-Prop((i-1)*matrixNums+j) 1 2 G(i)'],1,double(coefMatrices(:,:,i))');
-        lmiterm([-Prop((i-1)*matrixNums+j) 2 2 S(j)],1,1);
+% Prop = sym('Prop',[1, As_num]);
+for i = 1 : As_num
+    for j = 1 : As_num
+        Prop((i-1)*As_num+j) = newlmi;
+        lmiterm([-Prop((i-1)*As_num+j) 1 1 G(i)],1,1,'s');
+        lmiterm([-Prop((i-1)*As_num+j) 1 1 S(i)],-1,1);
+        lmiterm([-Prop((i-1)*As_num+j) 1 2 G(i)'],1,double(As(:,:,i))');
+        lmiterm([-Prop((i-1)*As_num+j) 2 2 S(j)],1,1);
     end
 end
 lmis=getlmis;

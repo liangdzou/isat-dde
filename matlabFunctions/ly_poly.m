@@ -1,4 +1,4 @@
-function [ly,flag] = ly_poly(a0, a1, xi, Wa, Wco, DELTA, e, md)
+function ly_str = ly_poly(a0, a1, xi, DELTA, Wa, Wco, e, md)
 
 % calculate Ivar0
 col = 2^(size(a0,1)*size(a0,2));
@@ -112,6 +112,13 @@ end
 
 Mvar = var0*transpose(var0);
 ly = transpose(Mvar(:))*(x(1:floor(size(x,1)/2),1) - x(floor(size(x,1)/2)+1:size(x,1)-1,1));
+
+if flag
+    ly_str = char(ly);
+else
+    ly_str = '';
+end
+
 
 end
 

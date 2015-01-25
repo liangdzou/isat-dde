@@ -13,22 +13,26 @@ using std::string;
 
 #include "isat3_ddes_problem.h"
 
+extern string& remove_devide(string& str);
+
 class ly_computer {
 public:
-	string ly_computation(isat3_ddes_problem);
+	string ly_computation(const isat3_ddes_problem&);
 };
 
 class c_max_computer {
 public:
-	double c_max_computation(isat3_ddes_problem, string ly, string target);
+	double c_max_computation(isat3_ddes_problem&, const string&);
 };
 
 class she_ly_computer: ly_computer {
-	string ly_computation(isat3_ddes_problem);
+public:
+	string ly_computation(const isat3_ddes_problem&);
 };
 
 class isat3_c_max_computer: c_max_computer {
-	double c_max_computation(isat3_ddes_problem, string ly, string target);
+public:
+	double c_max_computation(isat3_ddes_problem&, const string&);
 };
 
 #endif /* ISAT3_DDES_SOLVER_H_ */

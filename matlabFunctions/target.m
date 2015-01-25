@@ -27,6 +27,5 @@ for i = 1 : row
     end
 end
 
-target_str = strcat(target_str,';');
 
 end

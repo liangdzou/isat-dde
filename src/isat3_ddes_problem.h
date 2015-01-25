@@ -45,6 +45,18 @@ public:
 		return vars_end;
 	}
 
+	string get_init() {
+		return init;
+	}
+
+	string get_trans() {
+		return trans;
+	}
+
+	string get_target() {
+		return target;
+	}
+
 	void print();
 };
 

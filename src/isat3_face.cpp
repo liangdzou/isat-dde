@@ -17,23 +17,36 @@ bool iSAT3_expr(isat3* is3, isat3_node** vars_begin, isat3_node** vars_end,
 	isat3_node* expr = isat3_node_create_from_string(is3, exprStr.c_str());
 	i3_type_t result = isat3_solve_expr(is3, expr, expr_t_max);
 	isat3_node_destroy(is3, expr);
-	if (print)
-		isat3_result_print(is3, result, vars_begin, vars_end);
+	if (print) {
+		if (!isat3_result_contains_solution(result))
+			cout << "NO SOLUTION." << endl;
+		else {
+			cout << "POSSIBLE SOLUTION:" << endl;
+			isat3_result_print(is3, result, vars_begin, vars_end);
+		}
+	}
 	return isat3_result_contains_solution(result);
 }
 
 bool iSAT3_bmc(isat3* is3, isat3_node** vars_begin, isat3_node** vars_end,
-		string initStr, string transStr, string targetStr, bool print) {
+		string initStr, string transStr, string targetStr, bool print,
+		i3_tframe_t min_t = 0, i3_tframe_t max_t = ISAT3_MAX_TFRAME) {
 	isat3_node *init = isat3_node_create_from_string(is3, initStr.c_str());
 	isat3_node *trans = isat3_node_create_from_string(is3, transStr.c_str());
 	isat3_node *target = isat3_node_create_from_string(is3, targetStr.c_str());
-	i3_type_t result = isat3_solve_bmc(is3, init, trans, target, 0,
-	ISAT3_MAX_TFRAME, bmc_t_max);
+	i3_type_t result = isat3_solve_bmc(is3, init, trans, target, min_t, max_t,
+			bmc_t_max);
 	isat3_node_destroy(is3, init);
 	isat3_node_destroy(is3, trans);
 	isat3_node_destroy(is3, target);
-	if (print)
-		isat3_result_print(is3, result, vars_begin, vars_end);
+	if (print) {
+		if (!isat3_result_contains_solution(result))
+			cout << "SAFE." << endl;
+		else {
+			cout << "POSSIBLE SOLUTION:" << endl;
+			isat3_result_print(is3, result, vars_begin, vars_end);
+		}
+	}
 	return isat3_result_contains_solution(result);
 }
 
@@ -44,10 +57,10 @@ void isat3_result_print(isat3* is3, i3_type_t result, isat3_node** vars_begin,
 		cout << isat3_get_result_string(result) << " (in tframe " << tframe
 				<< ")" << endl;
 		for (i3_tframe_t t = 0; t <= tframe; t++) {
-			cout << "tframe" << t;
+			cout << "tframe" << t << ":" << endl;
 			for (auto vars_p = vars_begin; vars_p != vars_end; ++vars_p) {
 				if (*vars_p != NULL) {
-					cout << "\t" << isat3_node_get_variable_name(is3, *vars_p)
+					cout << "  " << isat3_node_get_variable_name(is3, *vars_p)
 							<< (isat3_is_lower_bound_strict(is3, *vars_p, t) ?
 									"(" : "[")
 							<< isat3_get_lower_bound(is3, *vars_p, t) << ", "
@@ -57,8 +70,6 @@ void isat3_result_print(isat3* is3, i3_type_t result, isat3_node** vars_begin,
 				}
 			}
 		}
-	} else {
-		cout << "NO SOLUTION" << endl;
 	}
 }
 
@@ -70,7 +81,6 @@ using std::begin;
 using std::end;
 
 void isat3_face_test() {
-	isat3_setup();
 	isat3* is3 = isat3_init(NULL);
 
 	const size_t size = 4;
@@ -100,7 +110,7 @@ void expr_test(isat3* is3, isat3_node** vars_begin, isat3_node** vars_end) {
 }
 
 void bmc_test(isat3* is3, isat3_node** vars_begin, isat3_node** vars_end) {
-	iSAT3_bmc(is3, vars_begin, vars_end, "x1=0; x2=0; x3=0; x4=0;", "x1' = x1+1;",
-			"x1>9;", true);
+	iSAT3_bmc(is3, vars_begin, vars_end, "x1=0; x2=0; x3=0; x4=0;",
+			"x1' = x1+1;", "x1>9;", true);
 }
 

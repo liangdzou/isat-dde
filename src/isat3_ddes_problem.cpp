@@ -20,10 +20,11 @@ using std::endl;
 #include "matEngine.h"
 #include "isat3_face.h"
 #include "parameters.h"
+#include "isat3_ddes_solver.h"
 
 isat3_ddes_problem::isat3_ddes_problem(string script) {
 
-	if (!(ep = engOpen("\0")))
+	if (!(ep = engOpen("")))
 		cout << "Can't start MATLAB engine" << endl;
 	engEvalString(ep, "addpath('./matlabFunctions');");
 	engEvalString(ep, script.c_str());
@@ -35,12 +36,11 @@ isat3_ddes_problem::isat3_ddes_problem(string script) {
 		printf("Get row or column failed. (in file isat3_ddes_problem.cpp)");
 	}
 
-	isat3_setup();
 	is3 = isat3_init(NULL);
 	vars_def(row, column);
 	vars_init(row, column);
 	trans_def(row, column);
-	engEvalString(ep, "target_str = target(TARGET,expr0);");
+	engEvalString(ep, "target_str = target(TARGET,expr0)");
 	target = getString(ep, "target_str");
 
 }
@@ -92,7 +92,7 @@ void isat3_ddes_problem::vars_init(int row, int column) {
 		for (int i = 0; i < column - 1; i++) {
 			init += "cb" + to_string(i + 1) + " = 0;\n";
 		}
-		init += "cb" + to_string(column) + " = " + to_string(init_val[0]);
+		init += "cb" + to_string(column) + " = " + to_string(init_val[0]) + ";";
 	} else {
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < column - 1; j++) {
@@ -100,7 +100,7 @@ void isat3_ddes_problem::vars_init(int row, int column) {
 						+ " = 0;\n";
 			}
 			init += "cb" + to_string(i + 1) + "_" + to_string(column) + " = "
-					+ to_string(init_val[i]);
+					+ to_string(init_val[i]) + ";";
 		}
 	}
 
@@ -108,7 +108,7 @@ void isat3_ddes_problem::vars_init(int row, int column) {
 
 void isat3_ddes_problem::trans_def(int row, int column) {
 	trans = "";
-	engEvalString(ep, "[a0,a1,expr0] = trans(DDES, INIT, DELTA, DEG);");
+	engEvalString(ep, "[a0,a1,xi,expr0] = trans(DDES, INIT, DELTA, DEG);");
 	for (int i = 0; i < row; i++) {
 		for (int j = 0; j < column; j++) {
 			string a0_i = "cb_i = char(a0(" + to_string(i + 1) + ","
@@ -119,7 +119,7 @@ void isat3_ddes_problem::trans_def(int row, int column) {
 			engEvalString(ep, a1_i.c_str());
 			string coefbf = getString(ep, "cb_i");
 			string coefaf = getString(ep, "ca_i");
-			trans += coefbf + "' = " + coefaf + ";";
+			trans += coefbf + "' = " + remove_devide(coefaf) + ";";
 		}
 	}
 

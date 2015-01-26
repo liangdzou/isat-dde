@@ -37,7 +37,8 @@ Vep = IVvar0;
 for i = 1 : col
     Vep(:,i) = Mep;
 end
-IVvarp = transpose(IVvar0 - Vep);
+IVvarp1 = transpose(IVvar0 - Vep);
+IVvarp2 = transpose(-IVvar0 - Vep);
 % calculate bigc
 Ico = interval(ones(size(a0,1)*(size(a0,2)+1))*(-1), ones(size(a0,1)*(size(a0,2)+1)))* Wco;
 IVco = Ico(:);
@@ -47,7 +48,9 @@ bigc = bigcI.sup;
 for i = 1 : col
     bigcI = (IVvar(i,:).sup*IVcop - IVvar(i,:).inf*IVcop);
     bigc = max(bigc, bigcI.sup);
-    bigcI = (IVvarp(i,:).sup*IVcop - IVvarp(i,:).inf*IVcop);
+    bigcI = (IVvarp1(i,:).sup*IVcop - IVvarp1(i,:).inf*IVcop);
+    bigc = max(bigc, bigcI.sup);
+    bigcI = (IVvarp2(i,:).sup*IVcop - IVvarp2(i,:).inf*IVcop);
     bigc = max(bigc, bigcI.sup);
 end
 
@@ -64,8 +67,9 @@ while (flag <= 0)
     BIGC = ones(size(IVvar,1),1) * bigc;
     MD = ones(size(IVvar,1),1) * md;
     A = [IVvar.sup, -IVvar.inf, -BIGC;
-         IVvarp.sup, -IVvarp.inf, BIGC];
-    b = [MD;BIGC];
+         IVvarp1.sup, -IVvarp1.inf, BIGC;
+         IVvarp2.sup, -IVvarp2.inf, BIGC];
+    b = [MD;BIGC;BIGC];
     [x,fval,flag] = intlinprog(f,intcon,A,b,[],[],lb,ub);
     
     % choose one variable from var0 (a0, xi0) and xi1 to bisect
@@ -102,7 +106,8 @@ while (flag <= 0)
     IVvar(size(Ivar1,2),:) = transpose(temp(:));
     
     % update IVvarp
-    IVvarp = transpose(IVvar0 - Vep);
+    IVvarp1 = transpose(IVvar0 - Vep);
+    IVvarp2 = transpose(-IVvar0 - Vep);
     
     % print bisecting times
     if mod(Nums, 100) == 0

@@ -23,7 +23,6 @@ using std::endl;
 #include "isat3_ddes_solver.h"
 
 isat3_ddes_problem::isat3_ddes_problem(string script) {
-
 	if (!(ep = engOpen("")))
 		cout << "Can't start MATLAB engine" << endl;
 	engEvalString(ep, "addpath('./matlabFunctions');");
@@ -53,7 +52,7 @@ void isat3_ddes_problem::vars_def(int row, int column) {
 		for (int i = 0; i < column; i++) {
 			string var_str = "cb" + to_string(i + 1);
 			vars_begin[i] = isat3_node_create_variable_float(is3,
-					var_str.c_str(), BL, BU);
+					var_str.c_str(), -para::get_a_w(), para::get_a_w());
 		}
 		vars_begin[column] = isat3_node_create_variable_float(is3, "xi1", 0,
 				delta);
@@ -64,7 +63,7 @@ void isat3_ddes_problem::vars_def(int row, int column) {
 						+ to_string(j + 1);
 				vars_begin[i * (column + 1) + j] =
 						isat3_node_create_variable_float(is3, var_str.c_str(),
-								BL, BU);
+								-para::get_a_w(), para::get_a_w());
 			}
 			string var_str = ("xi" + to_string(i + 1));
 			vars_begin[i * (column + 1) + column] =

@@ -11,8 +11,8 @@
 #include <string>
 #include <iostream>
 
-#ifndef ISAT3_DDES_GETRELATION_H_
-#define ISAT3_DDES_GETRELATION_H_
+#ifndef ISAT3_DDES_PROBLEM_H_
+#define ISAT3_DDES_PROBLEM_H_
 
 class isat3_ddes_problem {
 
@@ -28,6 +28,9 @@ public:
 	Engine* ep;
 
 	isat3_ddes_problem(string script);
+	isat3_ddes_problem() = delete;
+	isat3_ddes_problem(const isat3_ddes_problem&) = delete;
+	isat3_ddes_problem& operator=(const isat3_ddes_problem&) = delete;
 	~isat3_ddes_problem() {
 		for (auto var_p = vars_begin; var_p != vars_end; ++var_p)
 			isat3_node_destroy(is3, *var_p);

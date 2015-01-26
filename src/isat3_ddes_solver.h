@@ -17,7 +17,7 @@ extern string& remove_devide(string& str);
 
 class ly_computer {
 public:
-	string ly_computation(const isat3_ddes_problem&);
+	string ly_computation(isat3_ddes_problem&);
 };
 
 class c_max_computer {
@@ -27,7 +27,7 @@ public:
 
 class she_ly_computer: ly_computer {
 public:
-	string ly_computation(const isat3_ddes_problem&);
+	string ly_computation(isat3_ddes_problem&);
 };
 
 class isat3_c_max_computer: c_max_computer {

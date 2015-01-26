@@ -2,7 +2,7 @@
 
 % inputs (4-tuple)
 DDES = @(x) [-x(1); -x(2)];
-LINEAR = true;
+LINEAR = 1;
 INIT = [8.; 8.];
 DELTA = 1;
 

@@ -65,11 +65,11 @@ double isat3_c_max_computer::c_max_computation(isat3_ddes_problem& problem,
 	string exprStr;
 
 	// TODO: solve this bug.
-	cout << "strange test!!!" << endl;
-	cout << (exprStr = "((" + ly + ")<=856) and (" + problem.get_target() + ");") << endl;
-	iSAT3_expr(problem, exprStr, true);
-	cout << (exprStr = "((" + ly + ")<=500) and (" + problem.get_target() + ");") << endl;
-	iSAT3_expr(problem, exprStr, true);
+//	cout << "strange test!!! (in isat3_ddes_solver.)" << endl;
+//	cout << (exprStr = "((" + ly + ")<=856) and (" + problem.get_target() + ");") << endl;
+//	iSAT3_expr(problem, exprStr, true);
+//	cout << (exprStr = "((" + ly + ")<=500) and (" + problem.get_target() + ");") << endl;
+//	iSAT3_expr(problem, exprStr, true);
 
 	double c, c_L = para::get_c_min(), c_U = para::get_c_max();
 	bool isfound = false;
@@ -80,7 +80,7 @@ double isat3_c_max_computer::c_max_computation(isat3_ddes_problem& problem,
 				+ problem.get_target() + ");";
 		cout << "Try c =" << c << ", c is between " << c_L << " and " << c_U
 				<< endl << "  ";
-		bool sat = iSAT3_expr(problem, exprStr, true);
+		bool sat = iSAT3_expr(problem, exprStr, false);
 		if (!sat) {
 			isfound = true;
 			c_L = c;

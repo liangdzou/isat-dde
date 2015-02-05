@@ -1,4 +1,7 @@
-function [ly,ly_str] = ly_poly(a0, a1, xi, xi1, DELTA, TEMP, Wa, Wco, e, md)
+function [ly,ly_str] = ly_poly(a0, a1, xi, xi1, DELTA, Wa, Wco, e, md)
+vars = [a0(:);xi];
+TEMP = vars * transpose(vars);
+TEMP = transpose(TEMP(:));
 
 % initialize Ivar
 row = 2^(size(a0,1)*size(a0,2));

@@ -11,12 +11,7 @@
 #include "isat3_ddes_solver.h"
 #include "parameters.h"
 
-using std::string;
-using std::to_string;
-using std::cout;
-using std::endl;
-using std::stod;
-using std::stol;
+using namespace std;
 
 #include "isat3/isat3.h"
 

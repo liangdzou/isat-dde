@@ -107,7 +107,7 @@ void isat3_ddes_problem::vars_init(int row, int column) {
 
 void isat3_ddes_problem::trans_def(int row, int column) {
 	trans = "";
-	engEvalString(ep, "[a0,a1,xi,expr0] = trans(DDES, INIT, DELTA, DEG);");
+	engEvalString(ep, "[a0,a1,xi,xi1,expr0] = trans(DDES, INIT, DELTA, DEG);");
 	for (int i = 0; i < row; i++) {
 		for (int j = 0; j < column; j++) {
 			string a0_i = "cb_i = char(a0(" + to_string(i + 1) + ","

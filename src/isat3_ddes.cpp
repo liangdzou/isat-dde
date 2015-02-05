@@ -21,7 +21,6 @@ using std::stol;
 #include "isat3/isat3.h"
 
 int main(int argc, char **argv) {
-	clock_t sclock = clock();
 
 	for (int i = 0; i < argc - 1; ++i) {
 		if (!strcmp(argv[i], "-file"))
@@ -93,8 +92,8 @@ int main(int argc, char **argv) {
 	cout << c << endl << endl;
 #endif
 
+	clock_t sclock = clock();
 	iSAT3_bmc(problem, ly + "<=" + to_string(c));
-
 	clock_t eclock = clock();
 	cout << endl << "It takes "
 			<< static_cast<double>(eclock - sclock) / CLOCKS_PER_SEC

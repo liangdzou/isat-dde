@@ -1,4 +1,4 @@
-function [a0,a1,xi,expr0] = trans(DDES, INIT, DELTA, DEG)
+function [a0,a1,xi,xi1,expr0] = trans(DDES, INIT, DELTA, DEG)
 
 % get templates for this segment (coefBefore) and the next segment (coefAfter)
 syms t;
@@ -15,6 +15,7 @@ for i = 1 : DEG-1
     lie_div = diff(lie_div);
 end
 xi = sym('xi',[vars_num,1]);
+xi1 = sym('xia',[vars_num,1]);
 for i = 1 : vars_num
     a1(i,DEG+1) = subs(lie_div(i)/factorial(DEG),t,xi(i,1));
 end

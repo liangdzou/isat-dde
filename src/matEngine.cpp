@@ -51,19 +51,26 @@ string getString(Engine *ep, string var) {
 
 string toZeroDot(string str) {
 	std::ostringstream ret;
-	bool flag = true;
 	for (size_t i = 0; i < str.size(); i++) {
-		if (flag && str[i] == '.') {
+		if (str[i] == '.' && (i == 0 || !isdigit(str[i - 1]))) {
 			ret << "0.";
 		} else {
 			ret << str[i];
 		}
-		if ('0' <= str[i + 1] && str[i + 1] <= '9') {
-			flag = false;
-		} else {
-			flag = true;
-		}
 	}
+//	bool flag = true;
+//	for (size_t i = 0; i < str.size(); i++) {
+//		if (flag && str[i] == '.') {
+//			ret << "0.";
+//		} else {
+//			ret << str[i];
+//		}
+//		if ('0' <= str[i + 1] && str[i + 1] <= '9') {
+//			flag = false;
+//		} else {
+//			flag = true;
+//		}
+//	}
 	return ret.str();
 }
 

@@ -7,7 +7,7 @@ INIT = 1;
 DELTA = 1;
 
 % parameters (3-tuple)
-DEG = 2;
+DEG = 1;
 AL = -1000;
 AU = 1000;
 

@@ -49,7 +49,7 @@ bool iSAT3_bmc(isat3_ddes_problem& problem, const string& termStr, bool print) {
 	isat3_node *target_term = isat3_node_create_from_string(is3,
 			target_term_str.c_str());
 	i3_type_t result = isat3_solve_bmc(is3, init, trans, target_term, 0,
-			ISAT3_MAX_TFRAME, para::get_bmc_t_max());
+	ISAT3_MAX_TFRAME, para::get_bmc_t_max());
 	if (print) {
 		cout << "Last frame of termination, ";
 		isat3_result_print_last(problem, result);
@@ -82,18 +82,16 @@ bool iSAT3_bmc(isat3_ddes_problem& problem, const string& termStr, bool print) {
 	isat3_node_destroy(is3_local, term);
 	isat3_deinit(is3_local);
 
-	if (print) {
-		if (isat3_result_contains_solution(yes_ret)
-				&& !isat3_result_contains_solution(no_ret)) {
-			cout << "SAFE." << endl;
-		} else if (isat3_result_contains_solution(no_ret)) {
-			cout << "UNSAFE.  [target is reachable with all values"
-					<< " in the given intervals]" << " (in tframe " << tframe
-					<< ")" << endl;
-			isat3_result_print(problem, result);
-		} else {
-			cout << "Impossible path. (in isat3_face.cpp)" << endl;
-		}
+	if (isat3_result_contains_solution(yes_ret)
+			&& !isat3_result_contains_solution(no_ret)) {
+		cout << "SAFE." << endl;
+	} else if (isat3_result_contains_solution(no_ret)) {
+		cout << "UNSAFE.  [target is reachable with all values"
+				<< " in the given intervals]" << " (in tframe " << tframe << ")"
+				<< endl;
+		isat3_result_print(problem, result);
+	} else {
+		cout << "Impossible path. (in isat3_face.cpp)" << endl;
 	}
 
 	isat3_node_destroy(is3, init);

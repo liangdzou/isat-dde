@@ -20,7 +20,7 @@ using std::end;
 #include "parameters.h"
 
 string she_ly_computer::ly_computation(isat3_ddes_problem& problem) {
-	string command = "[ly_str,md] = ly_computer(a0, a1, xi, DELTA, LINEAR, "
+	string command = "[ly,ly_str,md] = ly_computer(a0, a1, xi, DELTA, LINEAR, "
 			+ to_string(para::get_a_w()) + ", " + to_string(para::get_co_w())
 			+ ", " + to_string(para::get_e()) + ", " + to_string(para::get_md())
 			+ ");";
@@ -44,6 +44,7 @@ string she_ly_computer::ly_computation(isat3_ddes_problem& problem) {
 		}
 		exprStr = "(" + exprStr.substr(exprStr.find('(')) + ") and ("
 				+ problem.get_target() + ");";
+		cout << exprStr.c_str() << endl;
 		isat3_node *term = isat3_node_create_from_string(problem.is3,
 				exprStr.c_str());
 		i3_type_t ret = isat3_solve_expr(problem.is3, term,
@@ -75,12 +76,13 @@ double isat3_c_max_computer::c_max_computation(isat3_ddes_problem& problem,
 	bool isfound = false;
 	cout << "Computing maximum c:" << endl;
 	for (int i = 0; c_U - c_L >= para::get_c_delta(); i++) {
-		c = 0.5 * c_L + 0.5 * c_U;
+		c = 0.2 * c_L + 0.8 * c_U;
 		exprStr = "((" + ly + ")<=" + to_string(c) + ") and ("
 				+ problem.get_target() + ");";
-		cout << "Try c =" << c << ", c is between " << c_L << " and " << c_U
+		cout << "  Try c =" << c << ", c is between " << c_L << " and " << c_U
 				<< endl << "  ";
-		bool sat = iSAT3_expr(problem, exprStr, false);
+		bool sat = iSAT3_expr(problem, exprStr, true);
+		cout << string(80,'=') << endl;
 		if (!sat) {
 			isfound = true;
 			c_L = c;

@@ -29,6 +29,8 @@ class para {
 	static double c_min;
 	static double c_max;
 	static double c_delta;
+
+	static long bound;
 public:
 	static string get_file() {
 		return file;
@@ -60,6 +62,9 @@ public:
 	static double get_c_delta() {
 		return c_delta;
 	}
+	static long get_bound() {
+		return bound;
+	}
 	static void print() {
 		cout << "file:\t" << file << endl;
 		cout << "a_w:\t" << a_w << endl;
@@ -71,6 +76,7 @@ public:
 		cout << "c_min:\t" << c_min << endl;
 		cout << "c_max:\t" << c_max << endl;
 		cout << "c_delta:\t" << c_delta << endl;
+		cout << "bound:\t" << bound << endl;
 	}
 };
 

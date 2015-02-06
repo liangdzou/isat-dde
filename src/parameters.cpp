@@ -15,3 +15,5 @@ long para::bmc_t_max = 6000000000;
 double para::c_min = -1000;
 double para::c_max = 1000;
 double para::c_delta = 0.1;
+
+long para::bound = 100;

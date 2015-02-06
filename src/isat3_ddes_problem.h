@@ -40,6 +40,7 @@ public:
 		engClose(ep);
 	}
 
+	void reset_vars();
 	isat3_node** get_vars_begin() {
 		return vars_begin;
 	}

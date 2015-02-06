@@ -38,6 +38,8 @@ int main(int argc, char **argv) {
 			para::c_max = stod(argv[i + 1]);
 		else if (!strcmp(argv[i], "-c_delta"))
 			para::c_delta = stod(argv[i + 1]);
+		else if (!strcmp(argv[i], "-bound"))
+			para::bound = stol(argv[i + 1]);
 	}
 #define NDebug0
 #ifndef NDebug0
@@ -53,45 +55,65 @@ int main(int argc, char **argv) {
 	isat3_face_test();
 #endif
 
+	cout << string(80, '=') << endl << string(80, '=') << endl;
+	cout << "Loading... (" << para::file << ".m)" << endl;
 	if (para::file.empty()) {
 		cout << "No problem file is specified. (in isat_ddes.cpp)";
 		return 0;
 	}
+	clock_t sclock = clock();
 	isat3_ddes_problem problem(para::file);
-	cout << "Problem is loaded." << endl << endl;
+	clock_t eclock = clock();
+	cout << "Problem is loaded." << endl << "It takes "
+			<< static_cast<double>(eclock - sclock) / CLOCKS_PER_SEC
+			<< " seconds." << endl << endl << endl;
 #define NDebug2
 #ifndef NDebug2
 	problem.print();
 #endif
 
+	cout << string(80, '=') << endl << string(80, '=') << endl;
+	cout << "Calculating Lyapunov function..." << endl;
 	she_ly_computer ly_cal;
+	sclock = clock();
 	string ly = ly_cal.ly_computation(problem);
+	eclock = clock();
 	if (ly.empty())
 		cout << "The discrete system is not stable."
-				<< " (unbounded safety is given in the following.)" << endl << endl;
+				<< " (unbounded safety is given in the following.)" << endl;
 	else
-		cout << "Lyapunov function is calculated." << endl << endl;
+		cout << "Lyapunov function is calculated." << endl;
+	cout << "It takes " << static_cast<double>(eclock - sclock) / CLOCKS_PER_SEC
+			<< " seconds." << endl << endl << endl;
 #define NDebug3
 #ifndef NDebug3
 	cout << ly << endl << endl;
 #endif
 
-	isat3_c_max_computer c_cal;
 	double c = 0;
 	if (!ly.empty()) {
+		cout << string(80, '=') << endl << string(80, '=') << endl;
+		cout << "Calculating maximum c..." << endl;
+		isat3_c_max_computer c_cal;
+		sclock = clock();
 		c = c_cal.c_max_computation(problem, ly);
-		cout << "Maximum c is calculated, and it is " << c << endl << endl;
+		eclock = clock();
+		cout << "Maximum c is calculated, and it is " << c << endl;
+		cout << "It takes "
+				<< static_cast<double>(eclock - sclock) / CLOCKS_PER_SEC
+				<< " seconds." << endl << endl << endl;
 	}
 #define NDebug4
 #ifndef NDebug4
 	cout << c << endl << endl;
 #endif
 
-	clock_t sclock = clock();
+	cout << string(80, '=') << endl << string(80, '=') << endl;
+	cout << "Checking safety..." << endl;
+	sclock = clock();
 	iSAT3_bmc(problem, ly + "<=" + to_string(c));
-	clock_t eclock = clock();
-	cout << endl << "It takes "
-			<< static_cast<double>(eclock - sclock) / CLOCKS_PER_SEC
+	eclock = clock();
+	cout << "It takes " << static_cast<double>(eclock - sclock) / CLOCKS_PER_SEC
 			<< " seconds." << endl;
 
 	return EXIT_SUCCESS;

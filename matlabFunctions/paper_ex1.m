@@ -10,5 +10,5 @@ DELTA = 0.01;
 DEG = 1;
 
 % target (variables are x1, ..., xn)
-TARGET = sym('x1 >= x2 + x3');
+TARGET = sym('x1 < x2 + x3');
 

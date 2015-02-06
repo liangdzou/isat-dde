@@ -19,6 +19,7 @@ using std::endl;
 #include "isat3_ddes_problem.h"
 #include "matEngine.h"
 #include "isat3_face.h"
+#include "isat3/isat3.h"
 #include "parameters.h"
 #include "isat3_ddes_solver.h"
 
@@ -76,6 +77,45 @@ void isat3_ddes_problem::vars_def(int row, int column) {
 	vars_begin[row * (column + 1)] = isat3_node_create_variable_float(is3,
 			var_str.c_str(), 0, delta);
 	vars_end = vars_begin + row * (column + 1) + 1;
+}
+
+void isat3_ddes_problem::reset_vars() {
+	double delta = getDouble(ep, "DELTA");
+	int row = getInt(ep, "vars_num");
+	int column = getInt(ep, "DEG") + 1;
+
+	if (row == 1) {
+		for (int i = 0; i < column; i++) {
+			string var_str = "cb" + to_string(i + 1);
+			isat3_node_destroy(is3, vars_begin[i]);
+			vars_begin[i] = isat3_node_create_variable_float(is3,
+					var_str.c_str(), -para::get_a_w(), para::get_a_w());
+		}
+		isat3_node_destroy(is3, vars_begin[column]);
+		vars_begin[column] = isat3_node_create_variable_float(is3, "xi1", 0,
+				delta);
+	} else {
+		for (int i = 0; i < row; i++) {
+			for (int j = 0; j < column; j++) {
+				string var_str = "cb" + to_string(i + 1) + "_"
+						+ to_string(j + 1);
+				isat3_node_destroy(is3, vars_begin[i * (column + 1) + j]);
+				vars_begin[i * (column + 1) + j] =
+						isat3_node_create_variable_float(is3, var_str.c_str(),
+								-para::get_a_w(), para::get_a_w());
+			}
+			string var_str = ("xi" + to_string(i + 1));
+			isat3_node_destroy(is3, vars_begin[i * (column + 1) + column]);
+			vars_begin[i * (column + 1) + column] =
+					isat3_node_create_variable_float(is3, var_str.c_str(), 0,
+							delta);
+		}
+	}
+
+	string var_str("t");
+	isat3_node_destroy(is3, vars_begin[row * (column + 1)]);
+	vars_begin[row * (column + 1)] = isat3_node_create_variable_float(is3,
+			var_str.c_str(), 0, delta);
 }
 
 void isat3_ddes_problem::vars_init(int row, int column) {

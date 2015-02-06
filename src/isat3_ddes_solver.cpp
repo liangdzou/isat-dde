@@ -85,7 +85,7 @@ double isat3_c_max_computer::c_max_computation(isat3_ddes_problem& problem,
 		cout << "  Try c =" << c << ", c is between " << c_L << " and " << c_U
 				<< endl << "  ";
 		bool sat = iSAT3_expr(problem, exprStr, true);
-		cout << string(80, '.') << endl;
+		cout << "  " << string(50, '.') << endl;
 		if (!sat) {
 			isfound = true;
 			c_L = c;

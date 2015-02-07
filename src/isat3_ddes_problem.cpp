@@ -110,17 +110,17 @@ for (int i = 0; i < row; i++) {
 }
 
 if (row == 1) {
-	for (int i = 0; i < column - 1; i++) {
+	for (int i = 1; i < column; i++) {
 		init += "cb" + to_string(i + 1) + " = 0;\n";
 	}
-	init += "cb" + to_string(column) + " = " + to_string(init_val[0]) + ";";
+	init += "cb1 = " + to_string(init_val[0]) + ";";
 } else {
 	for (int i = 0; i < row; i++) {
-		for (int j = 0; j < column - 1; j++) {
+		for (int j = 1; j < column; j++) {
 			init += "cb" + to_string(i + 1) + "_" + to_string(j + 1)
 					+ " = 0;\n";
 		}
-		init += "cb" + to_string(i + 1) + "_" + to_string(column) + " = "
+		init += "cb" + to_string(i + 1) + "_1 = "
 				+ to_string(init_val[i]) + ";";
 	}
 }

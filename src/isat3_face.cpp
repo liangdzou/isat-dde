@@ -101,33 +101,29 @@ bool iSAT3_bmc(isat3_ddes_problem& problem, const string& termStr, bool print) {
 			target_str.c_str());
 	isat3_node *term = isat3_node_create_from_string(is3_local,
 			term_str.c_str());
-	i3_type_t yes_ret = isat3_solve_expr(is3_local, term,
-			para::get_expr_t_max());
 	i3_type_t no_ret = isat3_solve_expr(is3_local, target,
 			para::get_expr_t_max());
+//	i3_type_t yes_ret = isat3_solve_expr(is3_local, term,
+//			para::get_expr_t_max());
 	for (size_t i = 0; vars_begin + i < vars_end; ++i)
 		isat3_node_destroy(is3_local, vars[i]);
 	isat3_node_destroy(is3_local, target);
 	isat3_node_destroy(is3_local, term);
 	isat3_deinit(is3_local);
 
-	if (isat3_result_contains_solution(yes_ret)
-			&& !isat3_result_contains_solution(no_ret)) {
-		cout << "SAFE." << endl;
-	} else if (isat3_result_contains_solution(no_ret)) {
+	if (isat3_result_contains_solution(no_ret)) {
 		cout << "UNSAFE.  [target is reachable with all values"
 				<< " in the given intervals]" << " (in tframe " << tframe << ")"
 				<< endl;
 		isat3_result_print(problem, result);
 	} else {
-		cout << "Impossible path. (in isat3_face.cpp)" << endl;
+		cout << "SAFE." << endl;
 	}
 
 	isat3_node_destroy(is3, init);
 	isat3_node_destroy(is3, trans);
 	isat3_node_destroy(is3, target_term);
-	return isat3_result_contains_solution(yes_ret)
-			&& !isat3_result_contains_solution(no_ret);
+	return !isat3_result_contains_solution(no_ret);
 }
 
 void isat3_result_print(isat3_ddes_problem& problem, i3_type_t result) {
@@ -189,8 +185,7 @@ void isat3_face_test() {
 void expr_test(isat3_ddes_problem& problem) {
 	iSAT3_expr(problem,
 //			"(cb1^2 < cb2^3 + cb3^4) and (cb1 = 1) and (cb2 = -1) and (cb3 = 1);",
-			"(2<1);",
-			true);
+			"(2<1);", true);
 }
 
 void bmc_test(isat3_ddes_problem& problem) {

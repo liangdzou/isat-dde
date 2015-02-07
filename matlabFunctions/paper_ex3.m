@@ -3,8 +3,8 @@
 % inputs (4-tuple)
 DDES = @(x) -x*x*x;
 LINEAR = 0;
-INIT = 10;
-DELTA = 1;
+INIT = 200;
+DELTA = 0.001;
 
 % parameters
 DEG = 1;

@@ -127,22 +127,27 @@ int main(int argc, char **argv) {
 	cout << string(80, '=') << endl << string(80, '=') << endl;
 	cout << "Checking safety..." << endl;
 	if (ly.empty()) {
-		string isat3_problem = "DECL\n" + problem.get_decl() + "\nINIT\n" + problem.get_init()
-				+ "\nTRANS\n" + problem.get_trans() + "\nTARGET\n" + problem.get_target() + ";";
+		string isat3_problem = "DECL\n" + problem.get_decl() + "\nINIT\n"
+				+ problem.get_init() + "\nTRANS\n" + problem.get_trans()
+				+ "\nTARGET\n" + problem.get_target() + ";";
 		ofstream out("temp", ofstream::out);
 		out << isat3_problem;
 		out.flush();
+		sclock = clock();
+		t_start = time(NULL);
 		system("src/isat3/isat3 -I -v -v temp");
+		eclock = clock();
+		t_end = time(NULL);
 	} else {
 		sclock = clock();
 		t_start = time(NULL);
 		iSAT3_bmc(problem, ly + "<=" + to_string(c));
 		eclock = clock();
 		t_end = time(NULL);
-		cout << "It takes " << static_cast<double>(eclock - sclock) / CLOCKS_PER_SEC
-//			<< " or " << difftime(t_end, t_start) << " seconds."
-		<< endl;
 	}
+	cout << "It takes " << static_cast<double>(eclock - sclock) / CLOCKS_PER_SEC
+			<< " or " << difftime(t_end, t_start) << " seconds."
+			<< endl;
 
 	return EXIT_SUCCESS;
 }

@@ -17,7 +17,7 @@
 class isat3_ddes_problem {
 
 	isat3_node **vars_begin, **vars_end;
-	std::string init, trans, target;
+	std::string declare, init, trans, target;
 
 	void vars_def(int row, int column);
 	void vars_init(int row, int column);
@@ -48,15 +48,15 @@ public:
 	isat3_node** get_vars_end() {
 		return vars_end;
 	}
-
+	string get_decl() {
+		return declare;
+	}
 	string get_init() {
 		return init;
 	}
-
 	string get_trans() {
 		return trans;
 	}
-
 	string get_target() {
 		return target;
 	}

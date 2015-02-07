@@ -31,6 +31,7 @@ class para {
 	static double c_delta;
 
 	static long bound;
+	static bool stable;
 public:
 	static string get_file() {
 		return file;

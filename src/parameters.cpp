@@ -17,3 +17,4 @@ double para::c_max = 1000;
 double para::c_delta = 0.1;
 
 long para::bound = 100;
+bool para::stable = true;

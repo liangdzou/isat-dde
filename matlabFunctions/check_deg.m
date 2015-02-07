@@ -30,6 +30,7 @@ if isLinear
             Xs(i,1) = Xs(i,1) * ((1-xi(j,1)/DELTA) + rem(num,2)*(2*xi(j,1)/DELTA-1));
             num = (num-1)/2;
         end
+        % det((eye(6) - As(:,:,i))),
         if  vrho(eval(As(:,:,i))) >= 1
             flag = flag + 1;
         end

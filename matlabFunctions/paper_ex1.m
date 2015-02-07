@@ -1,14 +1,14 @@
-clear;
+ clear;
 
 % inputs (4-tuple)
-DDES = @(x) [-3*x(1)+6*x(2)+5*x(3); 2*x(1)-12*x(2); x(1)+6*x(2)-5*x(3)];
+DDES = @(x) -x;
 LINEAR = 1;
-INIT = [1;0;0];
-DELTA = 0.01;
+INIT = 1;
+DELTA = 1;
 
-% parameters (3-tuple)
-DEG = 1;
+% parameters
+DEG = 2;
 
 % target (variables are x1, ..., xn)
-TARGET = sym('x1 < 2*x2 + 2*x3');
+TARGET = [sym('x1>1'); sym('x1<-1')];
 

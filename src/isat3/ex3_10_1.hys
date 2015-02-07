@@ -15,5 +15,5 @@ n' = n+1;
 cb1' = cb1 + cb2;cb2' = -(cb1 + cb2*xi1)^3;
 
 TARGET
-n>500 and ((20 > cb1 + cb2*t)) or((cb1 + cb2*t > -20));
+n>500 && ((20 > cb1 + cb2*t)) or((cb1 + cb2*t > -20));
 

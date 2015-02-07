@@ -7,8 +7,8 @@ INIT = 200;
 DELTA = 0.001;
 
 % parameters
-DEG = 1;
+DEG = 21;
 
 % target (variables are x1, ..., xn)
-TARGET = [sym('x1>20'); sym('x1<-20')];
+TARGET = [sym('x1>400'); sym('x1<-400')];
 

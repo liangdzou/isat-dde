@@ -119,6 +119,23 @@ int main(int argc, char **argv) {
 //				<< " or " << difftime(t_end, t_start) << " seconds."
 				<< endl << endl << endl;
 	}
+	double dm = 0;
+	if (!ly.empty()) {
+		cout << string(80, '=') << endl << string(80, '=') << endl;
+		cout << "Calculating minimum reduction..." << endl;
+		sclock = clock();
+		t_start = time(NULL);
+		dm = dm_calc(problem, c);
+		cout << dm << endl;
+		eclock = clock();
+		t_end = time(NULL);
+		cout << "It takes "
+//				<< static_cast<double>(eclock - sclock) / CLOCKS_PER_SEC
+				<< " or " << difftime(t_end, t_start) << " seconds."
+				<< endl << endl << endl;
+	}
+
+
 #define NDebug4
 #ifndef NDebug4
 	cout << c << endl << endl;
@@ -146,7 +163,8 @@ int main(int argc, char **argv) {
 		t_end = time(NULL);
 	}
 	cout << "It takes " << static_cast<double>(eclock - sclock) / CLOCKS_PER_SEC
-			<< " or " << difftime(t_end, t_start) << " seconds."
+//			<< " or " << difftime(t_end, t_start)
+			<< " seconds."
 			<< endl;
 
 	return EXIT_SUCCESS;

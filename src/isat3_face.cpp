@@ -35,36 +35,6 @@ bool iSAT3_bmc(isat3_ddes_problem& problem, const string& termStr, bool print) {
 	auto vars_end = problem.get_vars_end();
 	string target_str = problem.get_target() + ";";
 
-//	if (termStr[0] == '<') {
-//		problem.reset_vars();
-//		cout << "Decl:" << problem.get_decl() << endl;
-//		cout << "Init:" << problem.get_init() << endl;
-//		cout << "Trans:" << problem.get_trans() << endl;
-//		cout << "Target:" << target_str << endl;
-//		isat3_node *init = isat3_node_create_from_string(is3,
-//				problem.get_init().c_str());
-//		isat3_node *trans = isat3_node_create_from_string(is3,
-//				problem.get_trans().c_str());
-//		target_str = "2<1;";
-//		isat3_node *target = isat3_node_create_from_string(is3,
-//				target_str.c_str());
-//		i3_type_t result = isat3_solve_bmc(is3, init, trans, target, 0,
-//				para::get_bound(), para::get_bmc_t_max());
-//		if (!isat3_result_contains_solution(result)) {
-//			cout << "SAFE within first " << to_string(para::get_bound())
-//					<< "* DELTA seconds." << endl;
-//			isat3_node_destroy(is3, target);
-//			return true;
-//		} else {
-//			i3_tframe_t tframe = isat3_get_tframe(is3);
-//			cout << "UNSAFE.  [target is reachable with in the given intervals]"
-//					<< " (in tframe " << tframe << ")" << endl;
-//			cout << "Target:" << target_str << endl;
-//			isat3_result_print(problem, result);
-//			return false;
-//		}
-//	}
-
 	isat3_node *init = isat3_node_create_from_string(is3,
 			problem.get_init().c_str());
 	isat3_node *trans = isat3_node_create_from_string(is3,

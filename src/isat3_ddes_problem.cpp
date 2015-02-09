@@ -38,8 +38,8 @@ isat3_ddes_problem::isat3_ddes_problem(string script) {
 
 	is3 = isat3_init(NULL);
 	vars_def(row, column);
-	vars_init(row, column);
 	trans_def(row, column);
+	vars_init(row, column);
 	engEvalString(ep, "target_str = target(TARGET,expr0)");
 	target = getString(ep, "target_str");
 
@@ -102,28 +102,31 @@ vars_def(row, column);
 
 void isat3_ddes_problem::vars_init(int row, int column) {
 init = "";
-double init_val[row];
-for (int i = 0; i < row; i++) {
-	string init_script = "init_i = INIT(" + to_string(i + 1) + ",1)";
-	engEvalString(ep, init_script.c_str());
-	init_val[i] = getDouble(ep, "init_i");
-}
+engEvalString(ep, "init");
+init = getString(ep, "init_str");
 
-if (row == 1) {
-	for (int i = 1; i < column; i++) {
-		init += "cb" + to_string(i + 1) + " = 0;\n";
-	}
-	init += "cb1 = " + to_string(init_val[0]) + ";";
-} else {
-	for (int i = 0; i < row; i++) {
-		for (int j = 1; j < column; j++) {
-			init += "cb" + to_string(i + 1) + "_" + to_string(j + 1)
-					+ " = 0;\n";
-		}
-		init += "cb" + to_string(i + 1) + "_1 = "
-				+ to_string(init_val[i]) + ";";
-	}
-}
+//double init_val[row];
+//for (int i = 0; i < row; i++) {
+//	string init_script = "init_i = INIT(" + to_string(i + 1) + ",1)";
+//	engEvalString(ep, init_script.c_str());
+//	init_val[i] = getDouble(ep, "init_i");
+//}
+//
+//if (row == 1) {
+//	for (int i = 1; i < column; i++) {
+//		init += "cb" + to_string(i + 1) + " = 0;\n";
+//	}
+//	init += "cb1 = " + to_string(init_val[0]) + ";";
+//} else {
+//	for (int i = 0; i < row; i++) {
+//		for (int j = 1; j < column; j++) {
+//			init += "cb" + to_string(i + 1) + "_" + to_string(j + 1)
+//					+ " = 0;\n";
+//		}
+//		init += "cb" + to_string(i + 1) + "_1 = "
+//				+ to_string(init_val[i]) + ";";
+//	}
+//}
 
 }
 

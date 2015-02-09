@@ -9,8 +9,6 @@
 #define ISAT3_DDES_SOLVER_H_
 
 #include <string>
-using std::string;
-
 #include "isat3_ddes_problem.h"
 
 extern string& remove_devide(string& str);
@@ -24,6 +22,8 @@ class c_max_computer {
 public:
 	double c_max_computation(isat3_ddes_problem&, const string&);
 };
+
+double dm_calc(isat3_ddes_problem&, double);
 
 class she_ly_computer: ly_computer {
 public:

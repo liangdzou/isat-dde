@@ -20,14 +20,8 @@ using std::end;
 #include "parameters.h"
 
 string she_ly_computer::ly_computation(isat3_ddes_problem& problem) {
-	string command =
-			"[ly,ly_str,md] = ly_computer(a0, a1, xi, xi1, DELTA, LINEAR, "
-					+ to_string(para::get_a_w()) + ", "
-					+ to_string(para::get_co_w()) + ", "
-					+ to_string(para::get_e()) + ", "
-					+ to_string(para::get_md()) + ");";
-
 	int linear = getInt(problem.ep, "LINEAR");
+
 	if (!linear) {
 		string exprStr("");
 		isat3* is3 = problem.is3;
@@ -57,7 +51,16 @@ string she_ly_computer::ly_computation(isat3_ddes_problem& problem) {
 					<< " the result may not be accurate." << endl;
 	}
 
-	engEvalString(problem.ep, command.c_str());
+	if (linear) {
+		string command = "[ly,ly_str,A,P,PSolutions] = ly_linear(a0, a1, xi, DELTA);\n";
+		engEvalString(problem.ep, command.c_str());
+	} else {
+		string command = "[ly,ly_str] = ly_poly(a0, a1, xi, xi1, DELTA, "
+				+ to_string(para::get_a_w()) + ", "
+				+ to_string(para::get_co_w()) + ", " + to_string(para::get_e())
+				+ ", " + to_string(para::get_md()) + ");";
+		engEvalString(problem.ep, command.c_str());
+	}
 	string ly_str = getString(problem.ep, "ly_str");
 	return remove_devide(ly_str);
 }
@@ -67,13 +70,6 @@ double isat3_c_max_computer::c_max_computation(isat3_ddes_problem& problem,
 		const string& ly) {
 
 	string exprStr;
-
-	// TODO: fix me.
-//	cout << "strange test!!! (in isat3_ddes_solver.)" << endl;
-//	cout << (exprStr = "((" + ly + ")<=856) and (" + problem.get_target() + ");") << endl;
-//	iSAT3_expr(problem, exprStr, true);
-//	cout << (exprStr = "((" + ly + ")<=500) and (" + problem.get_target() + ");") << endl;
-//	iSAT3_expr(problem, exprStr, true);
 
 	double c, c_L = para::get_c_min(), c_U = para::get_c_max();
 	bool isfound = false;
@@ -100,6 +96,12 @@ double isat3_c_max_computer::c_max_computation(isat3_ddes_problem& problem,
 
 	return c_L;
 
+}
+
+double dm_calc(isat3_ddes_problem& problem, double cmax) {
+	string command = "dm = ly_dm(a0,A,xi,P,PSolutions," + to_string(cmax) + ")";
+	engEvalString(problem.ep, command.c_str());
+	return getDouble(problem.ep, "dm");
 }
 
 string& remove_devide(string& str) {

@@ -3,10 +3,9 @@
 % inputs (4-tuple)
 DDES = @(x) -x;
 LINEAR = 1;
-INIT = 1;
+INIT = sym('1');
 DELTA = 1;
 
-% parameters
 DEG = 2;
 
 % target (variables are x1, ..., xn)

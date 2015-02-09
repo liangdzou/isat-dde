@@ -17,6 +17,7 @@ using namespace std;
 #include "isat3/isat3.h"
 
 int main(int argc, char **argv) {
+	path = getenv("ISATDDEHOME");
 
 	for (int i = 0; i < argc - 1; ++i) {
 		if (!strcmp(argv[i], "-file"))
@@ -60,7 +61,7 @@ int main(int argc, char **argv) {
 #endif
 
 	cout << string(80, '=') << endl << string(80, '=') << endl;
-	cout << "Loading... (" << para::file << ".m)" << endl;
+	cout << "Loading... (" << para::file << ")" << endl;
 	if (para::file.empty()) {
 		cout << "No problem file is specified. (in isat_ddes.cpp)";
 		return 0;

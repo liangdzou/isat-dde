@@ -26,8 +26,9 @@ using std::endl;
 isat3_ddes_problem::isat3_ddes_problem(string script) {
 	if (!(ep = engOpen("")))
 		cout << "Can't start MATLAB engine" << endl;
-	engEvalString(ep, "addpath('./matlabFunctions');");
-	engEvalString(ep, script.c_str());
+	string addpath = "addpath(" + path + "/matlab);";
+	engEvalString(ep, addpath);
+	engEvalString(ep, script.substr(0, script.size() - 2).c_str());
 	engEvalString(ep, "vars_num = size(INIT,1);");
 
 	int row = getInt(ep, "vars_num");
@@ -88,22 +89,22 @@ void isat3_ddes_problem::vars_def(int row, int column) {
 }
 
 void isat3_ddes_problem::reset_vars() {
-for (auto var_p = vars_begin; var_p != vars_end; ++var_p)
-	isat3_node_destroy(is3, *var_p);
-delete[] vars_begin;
-isat3_deinit(is3);
-isat3_cleanup();
-is3 = isat3_init(NULL);
+	for (auto var_p = vars_begin; var_p != vars_end; ++var_p)
+		isat3_node_destroy(is3, *var_p);
+	delete[] vars_begin;
+	isat3_deinit(is3);
+	isat3_cleanup();
+	is3 = isat3_init(NULL);
 
-int row = getInt(ep, "vars_num");
-int column = getInt(ep, "DEG") + 1;
-vars_def(row, column);
+	int row = getInt(ep, "vars_num");
+	int column = getInt(ep, "DEG") + 1;
+	vars_def(row, column);
 }
 
 void isat3_ddes_problem::vars_init(int row, int column) {
-init = "";
-engEvalString(ep, "init");
-init = getString(ep, "init_str");
+	init = "";
+	engEvalString(ep, "init");
+	init = getString(ep, "init_str");
 
 //double init_val[row];
 //for (int i = 0; i < row; i++) {
@@ -131,27 +132,27 @@ init = getString(ep, "init_str");
 }
 
 void isat3_ddes_problem::trans_def(int row, int column) {
-trans = "";
-engEvalString(ep, "[a0,a1,xi,xi1,expr0] = trans(DDES, INIT, DELTA, DEG);");
-for (int i = 0; i < row; i++) {
-	for (int j = 0; j < column; j++) {
-		string a0_i = "cb_i = char(a0(" + to_string(i + 1) + ","
-				+ to_string(j + 1) + "))";
-		string a1_i = "ca_i = char(a1(" + to_string(i + 1) + ","
-				+ to_string(j + 1) + "))";
-		engEvalString(ep, a0_i.c_str());
-		engEvalString(ep, a1_i.c_str());
-		string coefbf = getString(ep, "cb_i");
-		string coefaf = getString(ep, "ca_i");
-		trans += coefbf + "' = " + remove_devide(coefaf) + ";";
+	trans = "";
+	engEvalString(ep, "[a0,a1,xi,xi1,expr0] = trans(DDES, INIT, DELTA, DEG);");
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < column; j++) {
+			string a0_i = "cb_i = char(a0(" + to_string(i + 1) + ","
+					+ to_string(j + 1) + "))";
+			string a1_i = "ca_i = char(a1(" + to_string(i + 1) + ","
+					+ to_string(j + 1) + "))";
+			engEvalString(ep, a0_i.c_str());
+			engEvalString(ep, a1_i.c_str());
+			string coefbf = getString(ep, "cb_i");
+			string coefaf = getString(ep, "ca_i");
+			trans += coefbf + "' = " + remove_devide(coefaf) + ";";
+		}
 	}
-}
 
 }
 
 void isat3_ddes_problem::print() {
-cout << this->init << "\n\n";
-cout << this->trans << "\n\n";
-cout << this->target << endl;
+	cout << this->init << "\n\n";
+	cout << this->trans << "\n\n";
+	cout << this->target << endl;
 }
 

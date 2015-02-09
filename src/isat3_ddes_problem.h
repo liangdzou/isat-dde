@@ -14,6 +14,8 @@
 #ifndef ISAT3_DDES_PROBLEM_H_
 #define ISAT3_DDES_PROBLEM_H_
 
+static string path;
+
 class isat3_ddes_problem {
 
 	isat3_node **vars_begin, **vars_end;

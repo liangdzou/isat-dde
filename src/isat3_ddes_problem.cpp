@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <unistd.h>
 #include "engine.h"
 
 using std::string;
@@ -23,12 +24,24 @@ using std::endl;
 #include "parameters.h"
 #include "isat3_ddes_solver.h"
 
+string isat3_ddes_problem::path;
+
 isat3_ddes_problem::isat3_ddes_problem(string script) {
 	if (!(ep = engOpen("")))
 		cout << "Can't start MATLAB engine" << endl;
-	string addpath = "addpath(" + path + "/matlab);";
-	engEvalString(ep, addpath);
-	engEvalString(ep, script.substr(0, script.size() - 2).c_str());
+	string addpath = "addpath('" + path + "/matlab');";
+	engEvalString(ep, addpath.c_str());
+
+	script = script.substr(0, script.size() - 2);
+	string name(script), path;
+	if (script.rfind('/') != string::npos) {
+		size_t pos = script.rfind('/');
+		name = name.substr(pos+1,script.size());
+		addpath = "addpath('" + script.substr(0,pos) + "')";
+		engEvalString(ep, addpath.c_str());
+	}
+
+	engEvalString(ep, name.c_str());
 	engEvalString(ep, "vars_num = size(INIT,1);");
 
 	int row = getInt(ep, "vars_num");

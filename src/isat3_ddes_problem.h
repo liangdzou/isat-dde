@@ -14,8 +14,6 @@
 #ifndef ISAT3_DDES_PROBLEM_H_
 #define ISAT3_DDES_PROBLEM_H_
 
-static string path;
-
 class isat3_ddes_problem {
 
 	isat3_node **vars_begin, **vars_end;
@@ -28,6 +26,7 @@ class isat3_ddes_problem {
 public:
 	isat3* is3;
 	Engine* ep;
+	static string path;
 
 	isat3_ddes_problem(string script);
 	isat3_ddes_problem() = delete;

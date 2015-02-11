@@ -17,7 +17,7 @@ using namespace std;
 #include "isat3/isat3.h"
 
 int main(int argc, char **argv) {
-	path = getenv("ISATDDEHOME");
+	isat3_ddes_problem::path = getenv("ISATDDEHOME");
 
 	for (int i = 0; i < argc - 1; ++i) {
 		if (!strcmp(argv[i], "-file"))
@@ -148,12 +148,13 @@ int main(int argc, char **argv) {
 		string isat3_problem = "DECL\n" + problem.get_decl() + "\nINIT\n"
 				+ problem.get_init() + "\nTRANS\n" + problem.get_trans()
 				+ "\nTARGET\n" + problem.get_target() + ";";
-		ofstream out("temp", ofstream::out);
+		ofstream out("temp.hys", ofstream::out);
 		out << isat3_problem;
 		out.flush();
 		sclock = clock();
 		t_start = time(NULL);
-		system("src/isat3/isat3 -I -v -v temp");
+		string exe_str = isat3_ddes_problem::path + "/bin/isat3 -I -v -v temp.hys";
+		system(exe_str.c_str());
 		eclock = clock();
 		t_end = time(NULL);
 	} else {

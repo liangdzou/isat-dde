@@ -57,7 +57,7 @@
 								</option>
 								<option id="gnu.cpp.link.option.other.1036653332" name="Other options (-Xlinker [option])" superClass="gnu.cpp.link.option.other" valueType="stringList">
 									<listOptionValue builtIn="false" value="-rpath"/>
-									<listOptionValue builtIn="false" value="/home/liang/programs/MATLAB/R2014a/bin/glnxa64"/>
+									<listOptionValue builtIn="false" value="~/programs/MATLAB/R2014a/bin/glnxa64"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.942680192" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>

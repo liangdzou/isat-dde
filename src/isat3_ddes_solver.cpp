@@ -8,11 +8,7 @@
 #include <math.h>
 #include <string>
 #include <iostream>
-using std::to_string;
-using std::cout;
-using std::endl;
-using std::begin;
-using std::end;
+using namespace std;
 
 #include "isat3_ddes_solver.h"
 #include "isat3_face.h"
@@ -74,7 +70,7 @@ double isat3_c_max_computer::c_max_computation(isat3_ddes_problem& problem,
 	double c, c_L = para::get_c_min(), c_U = para::get_c_max();
 	bool isfound = false;
 	cout << "Computing maximum c:" << endl;
-	for (int i = 0; c_U - c_L >= c * para::get_c_delta(); i++) {
+	for (int i = 0; c_U - c_L >= fabs(c) * para::get_c_delta(); i++) {
 		c = 0.2 * c_L + 0.8 * c_U;
 		exprStr = "((" + ly + ")<=" + to_string(c) + ") and ("
 				+ problem.get_target() + ");";

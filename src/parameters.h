@@ -32,6 +32,8 @@ class para {
 
 	static long bound;
 	static bool stable;
+
+	static string ly;
 public:
 	static string get_file() {
 		return file;
@@ -78,6 +80,8 @@ public:
 		cout << "c_max:\t" << c_max << endl;
 		cout << "c_delta:\t" << c_delta << endl;
 		cout << "bound:\t" << bound << endl;
+		cout << "stable:\t" << stable << endl;
+		cout << "LY:\t" << ly << endl;
 	}
 };
 

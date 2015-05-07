@@ -20,4 +20,5 @@ for i = 1 : vars_num
     a1(i,DEG+1) = subs(lie_div(i)/factorial(DEG),t,xi(i,1));
 end
 
+a1(2,1)='-0.01*(cb2_1+cb2_2*0.128)-0.6*(cb1_1+cb1_2*0.128)';
 end

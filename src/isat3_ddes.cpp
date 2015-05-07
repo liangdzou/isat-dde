@@ -45,6 +45,9 @@ int main(int argc, char **argv) {
 		else if (!strcmp(argv[i], "-stable")) {
 			para::stable = strcasecmp(argv[i + 1], "false");
 		}
+		else if (!strcmp(argv[i], "-ly")) {
+			para::ly = argv[i + 1];
+		}
 	}
 #define NDebug0
 #ifndef NDebug0
@@ -80,7 +83,7 @@ int main(int argc, char **argv) {
 #endif
 
 	string ly;
-	if (para::stable) {
+	if (para::stable && para::ly=="") {
 		cout << string(80, '=') << endl << string(80, '=') << endl;
 		cout << "Calculating Lyapunov function..." << endl;
 		she_ly_computer ly_cal;
@@ -98,6 +101,8 @@ int main(int argc, char **argv) {
 //				<< static_cast<double>(eclock - sclock) / CLOCKS_PER_SEC << " or "
 				<< difftime(t_end, t_start) << " seconds." << endl << endl
 				<< endl;
+	} else {
+		ly = para::ly;
 	}
 #define NDebug3
 #ifndef NDebug3
@@ -121,7 +126,8 @@ int main(int argc, char **argv) {
 				<< endl << endl << endl;
 	}
 	double dm = 0;
-	if (!ly.empty()) {
+	int linear = getInt(problem.ep, "LINEAR");
+	if (!ly.empty() && linear) {
 		cout << string(80, '=') << endl << string(80, '=') << endl;
 		cout << "Calculating minimum reduction..." << endl;
 		sclock = clock();

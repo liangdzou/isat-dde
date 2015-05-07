@@ -1,4 +1,4 @@
-a_w = 1000;
+a_w = 10000000;
 nums = 100;
 numxi = 1;
 
@@ -8,7 +8,7 @@ decrease = ly - ly1;
 
 % first nums steps, suppose xi is always Delta/2
 ly_vals = zeros(1, nums);
-vala = [INIT,zeros(size(a0,1),size(a0,2)-1)];
+vala = [[100;100],zeros(size(a0,1),size(a0,2)-1)];
 valxi = DELTA*ones(size(xi));
 for i = 1 : nums
     ly_vals(i) = eval(subs(subs(subs(ly, a0, vala), xi, valxi), xi1, valxi));
